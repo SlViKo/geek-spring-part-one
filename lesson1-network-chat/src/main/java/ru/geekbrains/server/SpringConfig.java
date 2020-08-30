@@ -40,7 +40,7 @@ public class SpringConfig {
         ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
         ds.setPassword("qQ15935714789632");
         ds.setUsername("root");
-        ds.setUrl("jdbc:mysql://localhost:3306/network_chat?&amp;userUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC");
+        ds.setUrl("jdbc:mysql://localhost:3306/network_chat?&userUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC");
         return ds;
     }
 
