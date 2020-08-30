@@ -10,9 +10,15 @@ import ru.geekbrains.server.persistance.UserRepository;
 import javax.sql.DataSource;
 import java.sql.SQLException;
 
+
+
 @Configuration
 public class SpringConfig {
 
+    /*Ошибка при попытке получени контекста из AnnotationConfigApplicationContext
+    в чем проблема не понимаю, указываю @Bean
+    методы выделены не используемые
+    * */
     @Bean
     public ChatServer chatServer(AuthService authService) {
         return new ChatServer(authService);
