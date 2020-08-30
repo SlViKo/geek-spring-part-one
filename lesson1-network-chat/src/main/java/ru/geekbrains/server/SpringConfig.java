@@ -1,7 +1,9 @@
 package ru.geekbrains.server;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import ru.geekbrains.server.auth.AuthService;
 import ru.geekbrains.server.auth.AuthServiceJdbcImpl;
@@ -13,12 +15,21 @@ import java.sql.SQLException;
 
 
 @Configuration
+@PropertySource("application.properties")
 public class SpringConfig {
 
-    /*Ошибка при попытке получени контекста из AnnotationConfigApplicationContext
-    в чем проблема не понимаю, указываю @Bean
-    методы выделены не используемые
-    * */
+    @Value("${database.driver.class}")
+    private String driverClassName;
+
+    @Value("${database.url}")
+    private String databaseUrl;
+
+    @Value("${database.username}")
+    private String username;
+
+    @Value("${database.password}")
+    private String password;
+
     @Bean
     public ChatServer chatServer(AuthService authService) {
         return new ChatServer(authService);
