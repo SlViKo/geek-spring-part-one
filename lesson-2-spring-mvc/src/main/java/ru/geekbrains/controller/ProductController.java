@@ -3,13 +3,12 @@ package ru.geekbrains.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.persistance.Product;
 import ru.geekbrains.persistance.ProductRepository;
 
+import javax.validation.Valid;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -37,14 +36,23 @@ public class ProductController {
 
     @GetMapping("/create")
     public String createProduct(Model model) throws SQLException {
-        model.addAttribute("product", new Product(0, "", 0));
-        return "productCreate";
+        Product product = new Product();
+        model.addAttribute("product", product);
+        return "product";
     }
 
 
     @PostMapping("/update")
-    public String updateProduct(Product product) throws SQLException {
-        ProductRepository.update(product);
+    public String updateProduct(@Valid Product product, BindingResult bindingResult) throws SQLException {
+        if(bindingResult.hasErrors()) {
+            return "product";
+        }
+
+        if(product.getId() == 0) {
+            ProductRepository.insert(product);
+        } else {
+            ProductRepository.update(product);
+        }
         return "redirect:/product";
     }
 
@@ -54,9 +62,9 @@ public class ProductController {
         return "redirect:/product";
     }
 
-    @PostMapping("/delete")
-    public String deleteProducts(int id) throws SQLException {
-        ProductRepository.delete(id);
+    @DeleteMapping("/{id}/delete")
+    public String deleteProducts(@PathVariable("id") int idProduct) throws SQLException {
+        ProductRepository.delete(idProduct);
         return "redirect:/product";
     }
 
