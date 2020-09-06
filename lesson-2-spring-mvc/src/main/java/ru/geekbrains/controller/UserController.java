@@ -43,17 +43,13 @@ public class UserController {
     @PostMapping("/update")
     public String updateUser(@Valid User user, BindingResult bindingResult) throws SQLException {
        if(!user.getPassword().equals(user.getMatchingPassword())) {
-           System.out.println(user.getPassword());
-           System.out.println(user.getMatchingPassword());
-           bindingResult.rejectValue("password","NOT_Matching", "Пароли не совпадают" );
+           bindingResult.rejectValue("matchingPassword","NOT_Matching", "Пароли не совпадают" );
        }
 
         if (bindingResult.hasErrors()) {
             return "user";
         }
 
-        // TODO реализовать проверку повторного ввода пароля.
-        // TODO Использовать метод bindingResult.rejectValue();
 
         if (user.getId() != null) {
             userRepository.update(user);
